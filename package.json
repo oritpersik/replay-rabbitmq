@@ -1,0 +1,26 @@
+{
+  "name": "replay-rabbitmq",
+  "version": "1.0.7",
+  "description": "RabbitMQ wrapper for Replay project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test --recursive"
+  },
+  "dependencies": {
+    "amqplib": "^0.4.2"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linnovate/replay-common/tree/develop/replay-rabbitmq"
+  },
+  "keywords": [
+    "repaly",
+    "rabbitmq"
+  ],
+  "devDependencies": {
+    "mocha": "^3.0.2",
+    "chai": "^3.5.0"
+  }
+}
