@@ -66,7 +66,7 @@ module.exports.consume = function (queueName, maxUnackedMessagesAmount, callback
             // invoke callback and pass an err & done method which acks the message
             callback(messageContent,
               function err() {
-                // negative-acks the message
+                 // negative-acks the message
                 channel.nack(msg, false, false);
               },
               function done() {
@@ -87,12 +87,14 @@ module.exports.consume = function (queueName, maxUnackedMessagesAmount, callback
 // this method does not return anything no purpose;
 // the client has nothing to do with such failures, the message jus't won't be sent
 // and a log will be emitted.
-function produce(queueName, message) {
+function produce(queueName, message, options) {
   // create queue if not exists
   return assertQueue(queueName)
     .then(function (ok) {
       console.log('Sending message to queue %s: %s', queueName, JSON.stringify(message));
-      return channel.sendToQueue(queueName, new Buffer(JSON.stringify(message)), { persistent: true });
+      options = options || {};
+      options.persistent = true;
+      return channel.sendToQueue(queueName, new Buffer(JSON.stringify(message)), options);
     })
     .catch(function (err) {
       console.log('Error in producing to %s: %s', queueName, err);
@@ -125,7 +127,7 @@ function assertQueue(queueName) {
   // durable: persist queue messages
   // deadLetterExchange: use default exchange
   // deadLetterRoutingKey: router dead letter messages back to original queue
-  return channel.assertQueue(queueName, { durable: true, deadLetterExchange: '', deadLetterRoutingKey: queueName });
+  return channel.assertQueue(queueName, { durable: true, deadLetterExchange: '', deadLetterRoutingKey: queueName , maxPriority: 100});
 }
 
 // A channel will emit 'close' once the closing handshake (possibly initiated by calling close()) has completed;
