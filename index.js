@@ -50,7 +50,7 @@ module.exports.consume = function (queueName, maxUnackedMessagesAmount, callback
         }
 
         // if message passed maximum of re-send attempts, pass it to failed jobs queue
-        if (currentTransmissionNum > MAX_RESEND_ATTEMPTS) {
+       /* if (currentTransmissionNum > MAX_RESEND_ATTEMPTS) {
           console.log('Message exceeded resend attempts amount, passing to failed jobs queue...');
           // produce to failed jobs queue asynchrously then ack message from old queue
           produce(FAILED_JOBS_QUEUE, messageContent)
@@ -62,20 +62,20 @@ module.exports.consume = function (queueName, maxUnackedMessagesAmount, callback
           // else, just send the message.
           // exponential backoff: calculate total sleep time in millis
           var totalSleepMillis = Math.pow(2, currentTransmissionNum) * 1000;
-          setTimeout(function () {
+          setTimeout(function () {*/
             // invoke callback and pass an err & done method which acks the message
             callback(messageContent,
               function err() {
                  // negative-acks the message
-                channel.nack(msg, false, false);
+               // channel.nack(msg, false, false);
               },
               function done() {
                 // acks the message
-                channel.ack(msg);
+                //channel.ack(msg);
               });
-          }, totalSleepMillis);
-        }
-      }, { noAck: false });
+          //}, totalSleepMillis);
+       // }
+      }, { noAck: true });
     })
     .catch(function (err) {
       console.log('Error in consuming from %s: %s', queueName, err);
